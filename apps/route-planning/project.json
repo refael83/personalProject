@@ -9,7 +9,8 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "outputPath": "dist/apps/route-planning"
+        "outputPath": "dist/apps/route-planning",
+        "postcssConfig": "apps/routs-planning/postcss.config.js"
       },
       "configurations": {
         "development": {
@@ -24,7 +25,8 @@
       "executor": "@nx/vite:dev-server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "route-planning:build"
+        "buildTarget": "route-planning:build",
+        "proxyConfig": "apps/route-planning/proxy.conf.json"
       },
       "configurations": {
         "development": {

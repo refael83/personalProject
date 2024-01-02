@@ -1,12 +1,15 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import styles from './app.module.css';
+import Home from './page/Home';
 
-import NxWelcome from './nx-welcome';
 
 export function App() {
   return (
     <div>
-      <NxWelcome title="route-planning" />
+      <Home />
+      <h1 className='text-green-700 '>
+      Hello world!
+    </h1>
     </div>
   );
 }

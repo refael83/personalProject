@@ -1,0 +1,53 @@
+{
+  "name": "routes-back",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/routes-back/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/routes-back",
+        "main": "apps/routes-back/src/main.ts",
+        "tsConfig": "apps/routes-back/tsconfig.app.json",
+        "assets": ["apps/routes-back/src/assets"],
+        "webpackConfig": "apps/routes-back/webpack.config.js"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "routes-back:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "routes-back:build:development"
+        },
+        "production": {
+          "buildTarget": "routes-back:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/routes-back/jest.config.ts"
+      }
+    }
+  },
+  "tags": []
+}
