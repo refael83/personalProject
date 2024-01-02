@@ -1,13 +1,13 @@
 import { post }  from './connectToUsers/postgraphile'
-const cors = require('cors')
-const express = require('express')
-const bodyParser = require('body-parser')
+import cors from 'cors'
+import express from 'express'
+import bodyParser from 'body-parser'
 
 const app = express()
 
 const  PORT  = 3333
 
-app.use(cors())
+app.use(cors({origin: ['http://localhost:4200']}))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(post)

@@ -1,11 +1,11 @@
-import { useState } from "react";
-import Airports from "./Airports";
-import { client } from "../connectToServer";
+//import Airports from "./Airports";
+import Users from "./Users";
+
 
 export default function Home():JSX.Element{
     return (
-        <>
-            <Airports/>
-        </>
+        <div>
+            <Users/>
+         </div>
     )
 }

@@ -15,7 +15,6 @@ interface Airport {
 }
 
 export default function Airports(): JSX.Element {
-  const [rerender, setRerender] = useState<number>(0);
   const [airports, setAirports] = useState<Airport[]>([]);
 
   const fetchData = async () => {
@@ -24,7 +23,7 @@ export default function Airports(): JSX.Element {
         (await client.getAllAirports.query()) as unknown as Airport[];
       setAirports(data);
     } catch (err) {
-      throw new Error();
+      console.error('error')
     }
   };
   useEffect(() => {
