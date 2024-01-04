@@ -1,5 +1,6 @@
 import Jwt from "jsonwebtoken";
 import * as dotenv from 'dotenv';
+import { makeExtendSchemaPlugin, gql } from "graphile-utils"
 // import { getUserById } from "../users/userDal";
 // import { UserInterface } from "../interfaces/userInterface"
 dotenv.config();
@@ -21,9 +22,47 @@ interface UserInterface{
 //   return needAdmin.includes(url)
 // }
 
-export const generateAccessToken=(user:UserInterface)=> {
+const login = makeExtendSchemaPlugin(build =>{
+  const { pgSql: sql } = build;
+  return {
+    typeDefs:gql`
+    extend type Query{
+      login(email: String!, password: String!): RegisterUserResponse
+    }
+    `,
+    resolvers:{
+      Query:{
+        login: async (
+          parent: string,
+          args: { email: string; password: string },
+        ): Promise<{ user: UserInterface; accessToken: string }> => {
+          try {
+            const logInUser = args;
+            const user = await loginService(logInUser);
+      
+            if (user) {
+              const accessToken = Jwt.generateAccessToken(user);
+              return { user, accessToken };
+            }
+            throw new Error("Incorrect email or password");
+          } catch (error) {
+            console.error(error);
+            throw new Error("Server error while logging in");
+          }
+        }
+      }
+    }
+  }
+})
+
+export const generateAccessToken=(email, isAdmin, username)=> {
+    const user = {
+      username: username,
+      email: email,
+      isAdmin
+    }
     const secretKey="secret"
-    return Jwt.sign( String(user.id), secretKey)
+    return Jwt.sign( user, secretKey)
   }
 
 export const verifyToken =  (token: string | null) => {

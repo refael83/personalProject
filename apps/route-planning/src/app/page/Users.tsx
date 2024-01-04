@@ -38,6 +38,7 @@ export default function Users() {
   const { loading, error, data } = useQuery(getUsers,{
       context: {
         headers: {
+          "Content-Type": "application/json",
           "Authorization": "Bearer YOUR_TOKEN_HERE"
         }
       } 

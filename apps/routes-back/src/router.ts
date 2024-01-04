@@ -12,7 +12,7 @@ export const appRouter = router({
     .input(z.number())
     .query(async ( opts ) => {
       const id = opts.input;
-      return await service.getRouteById(id as number)
+      return await service.getRouteById(id)
     }),
     // recommendRoutes: publicProcedure
     // .input( ({ starting, distinction }) => {
