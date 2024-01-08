@@ -2,6 +2,7 @@ import { createHTTPServer } from '@trpc/server/adapters/standalone';
 import { appRouter } from './router';
 import { checkConnection } from './connectDB/connectDB';
 import { service } from './service';
+import  { dal} from './dal'
 import  cors  from 'cors'
 
 
@@ -19,6 +20,11 @@ const startServer = async () => {
   try {
     await checkConnection();
     server.listen(3000);
+    const test = async () =>{
+    const result=await service.recommendRoutes('JFK') 
+    console.log(result)
+    }
+    test()
     console.log('listening on port 3000');
 
   } catch (error) {

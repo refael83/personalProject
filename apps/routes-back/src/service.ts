@@ -1,5 +1,6 @@
 import { dal } from './dal';
 import * as priorityQueues from './priorityQueues';
+import airport from './connectDB/interfaces';
 
 export const service = {
   getAllRoutes: async () => {
@@ -7,7 +8,7 @@ export const service = {
       const result = await dal.getAllRoutes();
       return result;
     } catch (err) {
-      console.error(err);;
+      console.error(err);
     }
   },
   getRouteById: async (id: number) => {
@@ -18,35 +19,54 @@ export const service = {
       console.error(err);
     }
   },
-  recommendRoutes: async (start: any, distinction: any) => {
+  recommendRoutes: async ( start: string ) => {
     try {
-      const airports: object[] = (await dal.getAllAirports()) as object[];
-      const routes: any[] = (await dal.getAllRoutes()) as any[];
-      let exploredNode: Node[] = [];
-      let onlyOneNode: boolean[] = [];
-      let three: { airports: Node[]; routes: any[] };
+      const airports: airport[] = await dal.getAllAirports();
       let i = 0;
-      let insertNode = start;
-
-      while (exploredNode.length != airports.length) {
-        if (i != 0) insertNode = priorityQueues.findMin();
-        if (onlyOneNode[insertNode.airportDetails.id] === true) {
-          priorityQueues.deleteNode(insertNode, insertNode.position);
+      while (i < airports.length) {
+        if (airports[i].airportcode === start) {
+          airports[i].value = 0;
+          priorityQueues.insert(airports[i]);
+          i++;
           continue;
         }
-        exploredNode.push(insertNode.airportDetails);
-        onlyOneNode[insertNode.airportDetails.id] = true;
-        priorityQueues.deleteNode(insertNode, insertNode.position);
-        while (i < routes.length) {
-          if (routes[i].source_point === start) {
-            priorityQueues.insert({
-              airportDetails: routes[i].point_distinction,
-              value: insertNode.value + routes[i].distance,
-              key: 0,
-            });
+        airports[i].value = Number.MAX_VALUE;
+        priorityQueues.insert(airports[i]);
+        i++;
+      }
+      i = 0;
+      let j = 0;
+      const exploredNodes: airport[] = [];
+      const onlyOneNode: boolean[] = [];
+      let exploredNode: airport;
+
+      while (exploredNodes.length != airports.length) {
+        exploredNode = priorityQueues.findMin();
+        if (onlyOneNode[exploredNode.id] === true) {
+          priorityQueues.deleteNode(exploredNode.key);
+          continue;
+        }
+        exploredNodes.push(exploredNode);
+        onlyOneNode[exploredNode.id] = true;
+        priorityQueues.deleteNode(exploredNode.key);
+        if (exploredNode.departures[j]) {
+          while (j < exploredNode.departures.length) {
+            const destination = exploredNode.departures[j].destination
+            const distance = exploredNode.departures[j].distance
+            const newAirport = airports.find(
+              (airport) => airport.airportcode === destination
+            );
+            if(exploredNode.value + distance < newAirport.value ){
+              priorityQueues.changeKey(newAirport, distance + exploredNode.value);
+            }
+            
+            j++;
           }
+          j = 0;
+
         }
       }
+      return exploredNodes;
     } catch (err) {
       console.error(err);
     }
@@ -59,13 +79,12 @@ export const service = {
       console.error(err);
     }
   },
-  deleteAirportByCode: async ( airportCode: any ) => {
+  deleteAirportByCode: async (airportCode: string) => {
     try {
       const result = await dal.deleteAirportByCode(airportCode);
-      return result
-    }catch (err) {
+      return result;
+    } catch (err) {
       console.error(err);
     }
-  }
-
+  },
 };

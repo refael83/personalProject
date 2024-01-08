@@ -1,5 +1,6 @@
 import { Routes } from './connectDB/routes';
 import { airports } from './connectDB/airports';
+import airport from './connectDB/interfaces';
 
 export const dal = {
   getAllRoutes: async () => {
@@ -30,7 +31,7 @@ export const dal = {
   deleteAirportByCode: async (airportCode: string) => {
     try {
       const result = await airports.destroy({
-        where: { airport_code: airportCode },
+        where: { airportcode: airportCode },
       });
 
       if (result === 1) {
@@ -44,4 +45,20 @@ export const dal = {
       console.error('Error deleting airport:', error);
     }
   },
+  getAirportByCode: async (airportCode:string) => {
+    try {
+      const result = await airports.findOne({
+        where: { airportcode: airportCode },
+      });
+      return result.dataValues
+    } catch (error) {
+      console.error('Error get airport:', error);
+    }
+  },
+  addAirport: async (airport: airport) => {
+    try{
+      const result = aswit air
+    }
+
+  }
 };

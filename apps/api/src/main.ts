@@ -57,7 +57,7 @@ import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHt
   }
 
   const app = express();
-const httpServer = http.createServer(app);
+  const httpServer = http.createServer(app);
   
   const main = async() => {
     const { schema, plugin } = await makeSchemaAndPlugin(
@@ -68,6 +68,7 @@ const httpServer = http.createServer(app);
         graphiql: true,
         enhanceGraphiql: true,
         ownerConnectionString: 'owner',
+        jwtoption: true
       }
     );
 

@@ -14,13 +14,12 @@ export const appRouter = router({
       const id = opts.input;
       return await service.getRouteById(id)
     }),
-    // recommendRoutes: publicProcedure
-    // .input( ({ starting, distinction }) => {
-    //   return { starting, distinction }
-    // })
-    // .query(async ({ input }) => { 
-        
-    // }),
+    recommendRoutes: publicProcedure
+    .input ( z.string()) 
+    .query(async ( opts) => { 
+        const start = opts.input
+        return await service.recommendRoutes(start)
+    }),
     getAllAirports: publicProcedure
     .query(async () => {
       return await service.getAllAirports()
