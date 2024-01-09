@@ -55,10 +55,10 @@ export const dal = {
       console.error('Error get airport:', error);
     }
   },
-  addAirport: async (airport: airport) => {
-    try{
-      const result = aswit air
-    }
+  // addAirport: async (airport: airport) => {
+  //   try{
+  //     const result = aswit air
+  //   }
 
-  }
+  // }
 };

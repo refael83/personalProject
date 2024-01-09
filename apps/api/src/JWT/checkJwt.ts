@@ -22,38 +22,38 @@ interface UserInterface{
 //   return needAdmin.includes(url)
 // }
 
-const login = makeExtendSchemaPlugin(build =>{
-  const { pgSql: sql } = build;
-  return {
-    typeDefs:gql`
-    extend type Query{
-      login(email: String!, password: String!): RegisterUserResponse
-    }
-    `,
-    resolvers:{
-      Query:{
-        login: async (
-          parent: string,
-          args: { email: string; password: string },
-        ): Promise<{ user: UserInterface; accessToken: string }> => {
-          try {
-            const logInUser = args;
-            const user = await loginService(logInUser);
+// const login = makeExtendSchemaPlugin(build =>{
+//   const { pgSql: sql } = build;
+//   return {
+//     typeDefs:gql`
+//     extend type Query{
+//       login(email: String!, password: String!): RegisterUserResponse
+//     }
+//     `,
+//     resolvers:{
+//       Query:{
+//         login: async (
+//           parent: string,
+//           args: { email: string; password: string },
+//         ): Promise<{ user: UserInterface; accessToken: string }> => {
+//           try {
+//             const logInUser = args;
+//             const user = await loginService(logInUser);
       
-            if (user) {
-              const accessToken = Jwt.generateAccessToken(user);
-              return { user, accessToken };
-            }
-            throw new Error("Incorrect email or password");
-          } catch (error) {
-            console.error(error);
-            throw new Error("Server error while logging in");
-          }
-        }
-      }
-    }
-  }
-})
+//             if (user) {
+//               const accessToken = Jwt.generateAccessToken(user);
+//               return { user, accessToken };
+//             }
+//             throw new Error("Incorrect email or password");
+//           } catch (error) {
+//             console.error(error);
+//             throw new Error("Server error while logging in");
+//           }
+//         }
+//       }
+//     }
+//   }
+// })
 
 export const generateAccessToken=(email, isAdmin, username)=> {
     const user = {

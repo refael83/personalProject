@@ -1,17 +1,13 @@
 
 //import { getUsers } from '../users/query/getUsers.query';
 import '../app.module.css'
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 import { useQuery, gql  } from '@apollo/client';
 //import { getUsers } from './users/query/getUsers.query';
-
+import user from '../users/interface';
 import '../app.module.css';
-interface user {
-  email: string;
-  isAdmin: boolean;
-  username: string;
-  password: string;
-  userId: number;
-}
+
 
 interface result {
   node: user;
@@ -48,6 +44,7 @@ export default function Users() {
   if (loading) return <p>Loading...</p>;
   return (
     <div>
+      <Navbar/>
       {data.allUsers.edges.map((result: result) => (
         <div key={result.node.userId}>
           <div className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
@@ -67,6 +64,7 @@ export default function Users() {
           </div>
         </div>
       ))}
+      <Footer/>
     </div>
   );
 }

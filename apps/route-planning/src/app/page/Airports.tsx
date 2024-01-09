@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { client } from '../connectToServer';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 import './Airport.css'
 
 interface Airport {
@@ -20,7 +22,7 @@ export default function Airports(): JSX.Element {
   const fetchData = async () => {
     try {
       const data: Airport[] =
-        (await client.getAllAirports.query()) as unknown as Airport[];
+        (await client.getAllAirports.query()) 
       setAirports(data);
     } catch (err) {
       console.error('error')
@@ -31,6 +33,7 @@ export default function Airports(): JSX.Element {
   },[]);
   return (
    <div>
+    <Navbar/>
       {airports.map((airport, index) => (
         <div key={airport.airport_code}>
         <div className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
@@ -41,6 +44,7 @@ export default function Airports(): JSX.Element {
         </div>
         </div>
         ))}
+        <Footer/>
     </div>
   );
 }

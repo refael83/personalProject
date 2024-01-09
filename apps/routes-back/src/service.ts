@@ -22,6 +22,7 @@ export const service = {
   recommendRoutes: async ( start: string ) => {
     try {
       const airports: airport[] = await dal.getAllAirports();
+      airports[0].departures[1].distance = 150
       let i = 0;
       while (i < airports.length) {
         if (airports[i].airportcode === start) {

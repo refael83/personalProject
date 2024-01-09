@@ -1,10 +1,8 @@
  //import { post }  from './connectToUsers/postgraphile'
 // import express,{Request, Response, NextFunction, request} from 'express'
- import bodyParser from 'body-parser'
-// import { verifyToken, generateAccessToken } from './JWT/checkJwt'
- import morgan from "morgan";
- import cors from "cors";
 
+// import { verifyToken, generateAccessToken } from './JWT/checkJwt'
+ 
 // const app = express()
 
 // const  PORT  = 3333
@@ -40,21 +38,20 @@
 
 // app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
 
+import morgan from "morgan";
+ import cors from "cors";
 import pg from 'pg';
 import { ApolloServer } from 'apollo-server';
 import { makeSchemaAndPlugin } from 'postgraphile-apollo-server';
 import http from "http";
-import express,{Request, Response, NextFunction, request, response} from 'express'
-import { expressMiddleware } from "@apollo/server/express4";
+import express,{ request, response} from 'express'
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 
     const pgPool = new pg.Pool({
-      connectionString:"postgres://refael:TsnsYeIeGjnc7K3kK3AG3dPIO0Et1JPu@dpg-cm3v0s8cmk4c73cg1hjg-a.oregon-postgres.render.com:5432/users?sslmode=true"
+      connectionString:"postgres://postgres:postgres@localhost:5432/users"
   });
   
-  interface MyContext {
-    token?: string;
-  }
+
 
   const app = express();
   const httpServer = http.createServer(app);
@@ -62,13 +59,16 @@ import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHt
   const main = async() => {
     const { schema, plugin } = await makeSchemaAndPlugin(
       pgPool,
-      'public', 
+      'app_public', 
       {
-        watchPg: false,
+        watchPg: true,
         graphiql: true,
         enhanceGraphiql: true,
         ownerConnectionString: 'owner',
-        jwtoption: true
+        jwtSecret: "secret",
+        jwtPgTypeIdentifier: "app_public.jwt_token",
+        pgDefaultRole: true,
+   
       }
     );
 
