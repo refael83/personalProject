@@ -5,7 +5,7 @@ import { Model } from 'sequelize';
 
 
 
-interface airportInstance
+export interface airportInstance
   extends Model<airport>,
     airport {
       createdAt?: Date;

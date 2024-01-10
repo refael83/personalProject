@@ -1,6 +1,7 @@
 import { Routes } from './connectDB/routes';
+import { airportInstance } from './connectDB/airports';
 import { airports } from './connectDB/airports';
-import airport from './connectDB/interfaces';
+
 
 export const dal = {
   getAllRoutes: async () => {
@@ -19,11 +20,10 @@ export const dal = {
       console.error(err);
     }
   },
-  getAllAirports: async () => {
+  getAllAirports: async (): Promise<airportInstance[]> => {
     try {
-      return await airports.findAll({
-        raw: true,
-      });
+      const result = await airports.findAll({});
+      return result
     } catch (err) {
       console.error(err);
     }

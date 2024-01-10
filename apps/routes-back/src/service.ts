@@ -1,6 +1,7 @@
 import { dal } from './dal';
 import * as priorityQueues from './priorityQueues';
 import airport from './connectDB/interfaces';
+import { airportInstance } from './connectDB/airports';
 
 export const service = {
   getAllRoutes: async () => {
@@ -21,7 +22,7 @@ export const service = {
   },
   recommendRoutes: async ( start: string ) => {
     try {
-      const airports: airport[] = await dal.getAllAirports();
+      const airports = await dal.getAllAirports();
       airports[0].departures[1].distance = 150
       let i = 0;
       while (i < airports.length) {
@@ -72,7 +73,7 @@ export const service = {
       console.error(err);
     }
   },
-  getAllAirports: async () => {
+  getAllAirports: async ():Promise<airportInstance[]> => {
     try {
       const result = await dal.getAllAirports();
       return result;

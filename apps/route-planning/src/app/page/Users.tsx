@@ -14,39 +14,29 @@ interface result {
 }
 
 export const getUsers =  gql`
-  query MyQuery {
-    allUsers {
-      edges {
-        node {
-          email
-          isAdmin
-          nodeId
-          password
-          userId
-          username
-        }
-      }
+query Query {
+  allUsers {
+    nodes {
+      email
+      id
+      isAdmin
+      password
+      username
     }
   }
+}
 `;
 
 export default function Users() {
-  const { loading, error, data } = useQuery(getUsers,{
-      context: {
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer YOUR_TOKEN_HERE"
-        }
-      } 
-  });
-  console.log(data);
+  const {  loading, error, data } = useQuery(getUsers);
   if (error) return <p>Error : {error.message}</p>;
   if (loading) return <p>Loading...</p>;
+  console.log(data.allUsers.nodes);
   return (
     <div>
       <Navbar/>
-      {data.allUsers.edges.map((result: result) => (
-        <div key={result.node.userId}>
+      {data.allUsers.nodes.map((user: user) => (
+        <div key={`${user.username}-${user.email}`}>
           <div className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
             <img
               className="w-20 h-20 object-cover object-center rounded-full"
@@ -54,11 +44,11 @@ export default function Users() {
               alt="cuisine"
             />
             <h4 className="text-white text-2xl font-bold capitalize text-center">
-              {result.node.username}
+              {user.username}
             </h4>
-            <p className="text-white/50">{result.node.email}</p>
+            <p className="text-white/50">{user.email}</p>
             <p className="absolute top-2 text-white/20 inline-flex items-center text-xs">
-              {result.node.isAdmin}{' '}
+              {user.isAdmin}{' '}
               <span className="ml-2 w-2 h-2 block bg-green-500 rounded-full group-hover:animate-pulse"></span>
             </p>
           </div>

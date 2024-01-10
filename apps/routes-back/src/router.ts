@@ -1,6 +1,8 @@
 import { service }  from './service'
+import { airportInstance } from './connectDB/airports';
 import { z } from 'zod'
 import { publicProcedure, router } from './trpc';
+import airport from './connectDB/interfaces';
 
 
 export const appRouter = router({
@@ -22,6 +24,10 @@ export const appRouter = router({
     }),
     getAllAirports: publicProcedure
     .query(async () => {
-      return await service.getAllAirports()
+      const airports = await service.getAllAirports()
+      const result: airport[] = airports
+       
+
+      return result
     })
   });
