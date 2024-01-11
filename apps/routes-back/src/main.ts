@@ -20,7 +20,7 @@ const startServer = async () => {
     await checkConnection();
     server.listen(3000);
     const test = async () =>{
-    const result=await service.recommendRoutes('JFK') 
+    const result=await service.recommendRoutes('JFK', 'LHR') 
     console.log(result)
     }
     test()

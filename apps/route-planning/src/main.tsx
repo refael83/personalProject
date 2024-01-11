@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom/client';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import './styles.css'
 
+
 import App from './app/app';
 
 const client = new ApolloClient({

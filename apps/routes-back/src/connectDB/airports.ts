@@ -20,13 +20,13 @@ export const airports = sequelize.define<airportInstance>(
         allowNull: false,
         unique: true,
       },
-      airportcode: {
+      code: {
         type: DataTypes.STRING(3),
         primaryKey: true,
         allowNull: false,
         unique: true,
       },
-      airportname: {
+      name: {
         type: DataTypes.STRING(255),
         allowNull: false,
       },
@@ -46,11 +46,7 @@ export const airports = sequelize.define<airportInstance>(
         type: DataTypes.DECIMAL(9, 6),
         allowNull: false,
       },
-      departures: {
-        type: DataTypes.JSON,
-        allowNull: true
-      },
-      incoming:{
+      connections:{
         type: DataTypes.JSON,
         allowNull: true
       }

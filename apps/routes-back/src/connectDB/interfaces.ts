@@ -1,19 +1,16 @@
 export default  interface airport {
     id: number,
-    airportcode: string,
-    airportname: string,
+    code: string,
+    name: string,
     country: string,
     city: string,
     latitude: number,
     longitude: number,
-    departures: {
-      destination: string,
-      distance:number,
-    }[]
-    incoming: {
-      destination: string,
+    connections: {
+      destination: number,
       distance:number,
     }[]
     key?:number
     value?:number
+    privies?: airport
   }

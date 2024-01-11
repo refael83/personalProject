@@ -22,7 +22,9 @@ export const dal = {
   },
   getAllAirports: async (): Promise<airportInstance[]> => {
     try {
-      const result = await airports.findAll({});
+      const result = await airports.findAll({raw:true});
+      console.log(result);
+      
       return result
     } catch (err) {
       console.error(err);
@@ -31,7 +33,7 @@ export const dal = {
   deleteAirportByCode: async (airportCode: string) => {
     try {
       const result = await airports.destroy({
-        where: { airportcode: airportCode },
+        where: { code: airportCode },
       });
 
       if (result === 1) {
@@ -48,7 +50,7 @@ export const dal = {
   getAirportByCode: async (airportCode:string) => {
     try {
       const result = await airports.findOne({
-        where: { airportcode: airportCode },
+        where: { code: airportCode },
       });
       return result.dataValues
     } catch (error) {

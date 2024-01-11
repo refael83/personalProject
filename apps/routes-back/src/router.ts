@@ -1,8 +1,9 @@
 import { service }  from './service'
-import { airportInstance } from './connectDB/airports';
 import { z } from 'zod'
 import { publicProcedure, router } from './trpc';
 import airport from './connectDB/interfaces';
+
+const inputSchema = z.tuple([z.string(), z.string()]);
 
 
 export const appRouter = router({
@@ -17,10 +18,10 @@ export const appRouter = router({
       return await service.getRouteById(id)
     }),
     recommendRoutes: publicProcedure
-    .input ( z.string()) 
-    .query(async ( opts) => { 
-        const start = opts.input
-        return await service.recommendRoutes(start)
+    .input ( inputSchema ) 
+    .query( async (opts) => { 
+      const [start, destination] = inputSchema.parse(opts.input);
+        return await service.recommendRoutes(start, destination)
     }),
     getAllAirports: publicProcedure
     .query(async () => {
