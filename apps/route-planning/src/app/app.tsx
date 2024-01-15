@@ -1,6 +1,7 @@
 import Home from './page/Home';
 import Airports from './page/Airports';
 import Flights from './page/flights';
+import SignIn from './page/SignIn';
 import { useState } from 'react';
 import Users from './page/Users';
 import { Routes, BrowserRouter, Route } from 'react-router-dom';
@@ -16,9 +17,15 @@ export default function App() {
       links: [
         httpBatchLink({
           url: 'http://localhost:3000/',
+          // You can pass any HTTP headers you wish here
+          headers: () => {           
+            return {
+              Authorization: String(localStorage.getItem('token'))  ,
+            };
+          },
         }),
       ],
-    })
+    }),
   );
 
   return (
@@ -31,6 +38,7 @@ export default function App() {
               <Route path="/airports" element={<Airports />}></Route>
               <Route path="/users" element={<Users />}></Route>
               <Route path="/flights" element={<Flights />}></Route>
+              <Route path="/signIn"  element={<SignIn />}></Route>
             </Routes>
           </BrowserRouter>
           <ReactQueryDevtools/>

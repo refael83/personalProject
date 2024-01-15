@@ -21,14 +21,14 @@ import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHt
       pgPool,
       'app_public', 
       {
-        watchPg: false,
+        watchPg: true,
         graphiql: true,
         enhanceGraphiql: true,
         ownerConnectionString: 'owner',
         jwtSecret: "secret",
-        //jwtPgTypeIdentifier: "app_public.jwt_token",
+        jwtPgTypeIdentifier: "app_public.jwt_token",
         pgDefaultRole: true,
-   
+        
       }
     );
 

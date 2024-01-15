@@ -9,10 +9,6 @@ import user from '../users/interface';
 import '../app.module.css';
 
 
-interface result {
-  node: user;
-}
-
 export const getUsers =  gql`
 query Query {
   allUsers {

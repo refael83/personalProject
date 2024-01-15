@@ -12,27 +12,17 @@ import 'ol/ol.css';
 import { RMap, ROSM, RLayerVector, RFeature, RStyle, RGeolocation, useOL, } from "rlayers";
 import locationIcon from "../svg/location.svg";
 import InputComponent from '../components/input';
-import React,{ ChangeEvent, FormEvent, useEffect } from 'react';
-import { useQueries } from '@tanstack/react-query';
-
-
+import React,{ ChangeEvent, FormEvent } from 'react';
 
 
 export default  function Flights(): JSX.Element {
   const [source, setSource] = useState<string>('JFK');
   const [destination, setDestination] = useState<string>('LHR');
-  const [inputValue, setInputValue] = useState<string>('');
   const airports = trpc.airports.recommendRoutes.useQuery([source, destination],{
-    refetchOnWindowFocus: false,
-    enabled: false
-  });
+    enabled: false,
+  })
 
-  useEffect(
-    () => {
-      airports.refetch(); 
-    }, [inputValue]
-  );  
-  console.log(airports.data);
+
   const handleSourceChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSource(e.target.value);
   };
@@ -43,8 +33,7 @@ export default  function Flights(): JSX.Element {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Source:", source);
-    console.log("Destination:", destination);
+    airports.refetch()
   };
  
   return (

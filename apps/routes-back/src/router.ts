@@ -2,10 +2,11 @@ import { service }  from './service'
 import { z } from 'zod'
 import {initTRPC } from '@trpc/server';
 import airport from './connectDB/interfaces';
+import type { Context } from './context';
 
 const inputSchema = z.tuple([z.string(), z.string()]);
 
-const t = initTRPC.create();
+const t = initTRPC.context<Context>().create();
 const router = t.router;
 
 
@@ -28,11 +29,10 @@ export const appRouter = router({
       return await service.recommendRoutes(start, destination)
     }),
     getAllAirports: t.procedure
-    .query(async () => {
+    .query(async (opts) => {
+      if (opts.ctx.user)
       const airports = await service.getAllAirports()
-      const result: airport[] = airports
-      
-      
+      const result: airport[] = airports 
       return result
     })
 })
