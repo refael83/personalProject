@@ -17,7 +17,6 @@ export default function App() {
       links: [
         httpBatchLink({
           url: 'http://localhost:3000/',
-          // You can pass any HTTP headers you wish here
           headers: () => {           
             return {
               Authorization: String(localStorage.getItem('token'))  ,

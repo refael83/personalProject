@@ -1,9 +1,9 @@
-import * as dotenv from 'dotenv';
 import { Sequelize } from "sequelize";
+import  dotenv from 'dotenv'
 
-dotenv.config();
+dotenv.config()
 
-export const sequelize = new Sequelize('postgres://refael:TsnsYeIeGjnc7K3kK3AG3dPIO0Et1JPu@dpg-cm3v0s8cmk4c73cg1hjg-a.oregon-postgres.render.com:5432/airports', {
+export const sequelize = new Sequelize(process.env.DB_AIRPORTS, {
     dialect: 'postgres',
     dialectOptions: {
       ssl: {

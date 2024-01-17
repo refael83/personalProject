@@ -7,7 +7,7 @@ import './Airport.css'
 
 
 export default function Airports(): JSX.Element {
-  const airports = trpc.airports.getAllAirports.useQuery() 
+  const airports = trpc.getAllAirports.useQuery() 
   
   return (
    <div>

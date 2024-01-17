@@ -14,62 +14,6 @@ import locationIcon from "../svg/location.svg";
 import InputComponent from '../components/input';
 import React,{ ChangeEvent, FormEvent } from 'react';
 
-
-export default  function Flights(): JSX.Element {
-  const [source, setSource] = useState<string>('JFK');
-  const [destination, setDestination] = useState<string>('LHR');
-  const airports = trpc.airports.recommendRoutes.useQuery([source, destination],{
-    enabled: false,
-  })
-
-
-  const handleSourceChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSource(e.target.value);
-  };
-
-  const handleDestinationChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setDestination(e.target.value);
-  };
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    airports.refetch()
-  };
- 
-  return (
-    <>
-      <Navbar />
-      <form onSubmit={handleSubmit}>
-        <InputComponent label="Source" value={source} onChange={handleSourceChange} />
-        <InputComponent label="Destination" value={destination} onChange={handleDestinationChange} />
-
-        <button
-          type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-        >
-          Send
-        </button>
-      </form>
-      <RMap width={"100%"} height={"60vh"} initial={{ center: fromLonLat([0,0]), zoom: 11 }}>
-      <ROSM />
-      <GeolocComp/>
-      <RLayerVector zIndex={10}>
-      <RStyle.RStyle>
-          <RStyle.RIcon src={locationIcon} anchor={[0.5, 0.8]} />
-        </RStyle.RStyle>
-        {airports.data?.map((airport) =>
-        <RFeature
-          key={airport.code}
-          geometry={new Point(fromLonLat([airport.longitude, airport.latitude]))}
-        ></RFeature>
-          )}
-      </RLayerVector>
-    </RMap>
-      <Footer />
-    </>
-  );
-}
-
 function GeolocComp(): JSX.Element {
   const [pos, setPos] = useState(new Point(fromLonLat([0, 0])));
   const [accuracy, setAccuracy] = useState(
@@ -108,4 +52,60 @@ function GeolocComp(): JSX.Element {
     </>
   );
 }
+export default  function Flights(): JSX.Element {
+  const [source, setSource] = useState<string>('JFK');
+  const [destination, setDestination] = useState<string>('LHR');
+  const airports = trpc.recommendRoutes.useQuery([source, destination],{
+    enabled: false,
+  })
+
+
+  const handleSourceChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSource(e.target.value);
+  };
+
+  const handleDestinationChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setDestination(e.target.value);
+  };
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    airports.refetch()
+  };
+ 
+  return (
+    <>
+      <Navbar />
+      <form onSubmit={handleSubmit}>
+        <InputComponent label="Source" value={source} onChange={handleSourceChange} />
+        <InputComponent label="Destination" value={destination} onChange={handleDestinationChange} />
+
+        <button
+          type="submit"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        >
+          Send
+        </button>
+      </form>
+      <RMap width={"100%"} height={"60vh"} initial={{ center: fromLonLat([0,0]), zoom: 5 }}>
+      <ROSM />
+      <GeolocComp/>
+      <RLayerVector zIndex={10}>
+      <RStyle.RStyle>
+          <RStyle.RIcon src={locationIcon} anchor={[0.5, 0.8]} />
+        </RStyle.RStyle>
+        {airports.data?.map((airport) =>
+        <RFeature
+          key={airport.code}
+          geometry={new Point(fromLonLat([airport.longitude, airport.latitude]))}
+        ></RFeature>
+          )}
+      </RLayerVector>
+    </RMap>
+      <Footer />
+    </>
+  );
+}
+
+
 

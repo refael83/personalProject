@@ -1,7 +1,7 @@
 import { createHTTPServer } from '@trpc/server/adapters/standalone';
-import { appRouter } from './router';
+import { appRouter } from './router'
+import { createContext } from './context';
 import { checkConnection } from './connectDB/connectDB';
-import { service } from './service';
 import  cors  from 'cors'
 
 
@@ -9,23 +9,19 @@ import  cors  from 'cors'
 
 export type AppRouter = typeof appRouter;
 
+
 const server = createHTTPServer({
   router: appRouter,
   middleware: cors(),
-});
+  createContext: createContext
+  });
 
 
 const startServer = async () => {
   try {
     await checkConnection();
     server.listen(3000);
-    const test = async () =>{
-    const result=await service.recommendRoutes('JFK', 'LHR') 
-    console.log(result)
-    }
-    test()
     console.log('listening on port 3000');
-
   } catch (error) {
     console.error('Error during server setup:', error);
     process.exit(1); 

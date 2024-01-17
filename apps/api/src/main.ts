@@ -6,9 +6,12 @@ import { makeSchemaAndPlugin } from 'postgraphile-apollo-server';
 import http from "http";
 import express,{ request, response} from 'express'
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
+import dotenv from "dotenv";
+
+dotenv.config();
 
     const pgPool = new pg.Pool({
-      connectionString:"postgres://postgres:postgres@localhost:5432/users",
+      connectionString:process.env.DB_USERS,
   });
   
 
@@ -25,7 +28,7 @@ import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHt
         graphiql: true,
         enhanceGraphiql: true,
         ownerConnectionString: 'owner',
-        jwtSecret: "secret",
+        jwtSecret: process.env.JWT_SECRET_KEY as string,
         jwtPgTypeIdentifier: "app_public.jwt_token",
         pgDefaultRole: true,
         

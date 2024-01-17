@@ -1,17 +1,17 @@
 import { service }  from './service'
 import { z } from 'zod'
-import {initTRPC } from '@trpc/server';
+import {initTRPC, TRPCError } from '@trpc/server';
 import airport from './connectDB/interfaces';
-import type { Context } from './context';
+import { createContext } from './context';
+
 
 const inputSchema = z.tuple([z.string(), z.string()]);
 
-const t = initTRPC.context<Context>().create();
-const router = t.router;
+const t = initTRPC.context<typeof createContext>().create();
+const { createCallerFactory, router } = t;
 
 
 export const appRouter = router({
-  airports: t.router({
     getAllRoutes: t.procedure
     .query(async () => {
       return await service.getAllRoutes()
@@ -25,15 +25,19 @@ export const appRouter = router({
     recommendRoutes: t.procedure
     .input ( inputSchema ) 
     .query( async (opts) => { 
+      if (!opts.ctx.user){
+        throw new TRPCError({ code: 'UNAUTHORIZED' })
+      }
       const [start, destination] = inputSchema.parse(opts.input);
       return await service.recommendRoutes(start, destination)
     }),
     getAllAirports: t.procedure
-    .query(async (opts) => {
-      if (opts.ctx.user)
+    .query(async () => {      
       const airports = await service.getAllAirports()
       const result: airport[] = airports 
       return result
+
     })
-})
   });
+
+ export const createCaller = createCallerFactory(appRouter);

@@ -1,16 +1,12 @@
-import * as trpcNext from '@trpc/server/adapters/next';
-import { decodeAndVerifyJwtToken } from './somewhere/in/your/app/utils';
-export async function createContext({
-  req,
-  res,
-}: trpcNext.CreateNextContextOptions) {
-  // Create your context based on the request object
-  // Will be available as `ctx` in all your resolvers
-  // This is just an example of something you might want to do in your ctx fn
+import { verifyToken } from './jwt';
+import type { CreateNextContextOptions } from '@trpc/server/adapters/next';
+
+
+export const createContext = async (opts: CreateNextContextOptions) => {
   async function getUserFromHeader() {
-    if (req.headers.authorization) {
-      const user = await decodeAndVerifyJwtToken(
-        req.headers.authorization.split(' ')[1],
+    if (opts.req.headers.authorization) {
+      const user = await verifyToken(
+        opts.req.headers.authorization,
       );
       return user;
     }
@@ -20,5 +16,6 @@ export async function createContext({
   return {
     user,
   };
-}
+  
+};
 export type Context = Awaited<ReturnType<typeof createContext>>;
