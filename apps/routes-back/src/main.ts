@@ -3,6 +3,7 @@ import { appRouter } from './router'
 import { createContext } from './context';
 import { checkConnection } from './connectDB/connectDB';
 import  cors  from 'cors'
+import { service } from './service';
 
 
  
@@ -21,6 +22,8 @@ const startServer = async () => {
   try {
     await checkConnection();
     server.listen(3000);
+    const test = await service.getAllFlightsFromAirports();
+    console.log(test)
     console.log('listening on port 3000');
   } catch (error) {
     console.error('Error during server setup:', error);

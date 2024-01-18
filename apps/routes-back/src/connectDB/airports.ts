@@ -1,6 +1,6 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from './connectDB';
-import airport from './interfaces';
+import { airport } from './interfaces';
 import { Model } from 'sequelize';
 
 
@@ -13,20 +13,20 @@ export interface airportInstance
     }
 
 export const airports = sequelize.define<airportInstance>(
-    'airports',
+    'airports_2',
     {
       id: {
         type: DataTypes.NUMBER(),
         allowNull: false,
         unique: true,
       },
-      code: {
+      airportcode: {
         type: DataTypes.STRING(3),
         primaryKey: true,
         allowNull: false,
         unique: true,
       },
-      name: {
+      airportname: {
         type: DataTypes.STRING(255),
         allowNull: false,
       },
@@ -46,14 +46,11 @@ export const airports = sequelize.define<airportInstance>(
         type: DataTypes.DECIMAL(9, 6),
         allowNull: false,
       },
-      connections:{
-        type: DataTypes.JSON,
-        allowNull: true
-      }
     },
     {
       createdAt: false,
       updatedAt: false,
+      tableName: 'airports_2',
     }
   );
   

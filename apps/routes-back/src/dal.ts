@@ -1,21 +1,24 @@
-import { Routes } from './connectDB/routes';
+import { Flights } from './connectDB/flights';
 import { airportInstance } from './connectDB/airports';
 import { airports } from './connectDB/airports';
+import { Sequelize } from 'sequelize';
 
+airports.hasMany(Flights);
+Flights.belongsTo(airports);
 
 export const dal = {
-  getAllRoutes: async () => {
+  getAllFlights: async () => {
     try {
-      return await Routes.findAll({
+      return await Flights.findAll({
         raw: true,
       });
     } catch (err) {
       console.error(err);
     }
   },
-  getRouteById: async (id: number) => {
+  getFlightById: async (id: number) => {
     try {
-      return await Routes.findByPk(id);
+      return await Flights.findByPk(id);
     } catch (err) {
       console.error(err);
     }
@@ -33,7 +36,7 @@ export const dal = {
   deleteAirportByCode: async (airportCode: string) => {
     try {
       const result = await airports.destroy({
-        where: { code: airportCode },
+        where: { airportcode: airportCode },
       });
 
       if (result === 1) {
@@ -50,17 +53,28 @@ export const dal = {
   getAirportByCode: async (airportCode:string) => {
     try {
       const result = await airports.findOne({
-        where: { code: airportCode },
+        where: { airportcode: airportCode },
       });
       return result.dataValues
     } catch (error) {
       console.error('Error get airport:', error);
     }
   },
-  // addAirport: async (airport: airport) => {
-  //   try{
-  //     const result = aswit air
-  //   }
-
-  // }
+  getAllFlightsFromAirports: async () => {
+    try{
+      const result =  await airports.findAll({
+        attributes: [ 'id'],
+        include: [
+          {
+            model: Flights,
+            attributes: ['source_code','distance','destination_code'],
+          },
+        ],
+        order: [['id', 'ASC']],
+      })
+      return result
+    } catch (error) {
+      console.error('Error get airport:', error);
+    }
+  }
 };

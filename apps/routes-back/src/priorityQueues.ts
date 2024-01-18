@@ -1,4 +1,4 @@
-import airport from "./connectDB/interfaces";
+import {airport} from "./connectDB/interfaces";
 
 export interface Node  {
     airportDetails: airport;
