@@ -5,7 +5,7 @@ import {initTRPC, TRPCError } from '@trpc/server';
 import { createContext } from './context';
 
 
-//const inputSchema = z.tuple([z.string(), z.string()]);
+const inputSchema = z.tuple([z.string(), z.string()]);
 
 const t = initTRPC.context<typeof createContext>().create();
 const { createCallerFactory, router } = t;
@@ -22,15 +22,15 @@ export const appRouter = router({
       const id = opts.input;
       return await service.getRouteById(id)
     }),
-    // recommendRoutes: t.procedure
-    // .input ( inputSchema ) 
-    // .query( async (opts) => { 
-    //   if (!opts.ctx.user){
-    //     throw new TRPCError({ code: 'UNAUTHORIZED' })
-    //   }
-    //   const [start, destination] = inputSchema.parse(opts.input);
-    //   return await service.recommendFlights(start, destination)
-    // }),
+    recommendFlights: t.procedure
+    .input ( inputSchema ) 
+    .query( async (opts) => { 
+      if (!opts.ctx.user){
+        throw new TRPCError({ code: 'UNAUTHORIZED' })
+      }
+      const [start, destination] = inputSchema.parse(opts.input);
+      return await service.recommendFlights(start, destination)
+    }),
     getAllAirports: t.procedure
     .query(async () => {      
       const airports = await service.getAllAirports()

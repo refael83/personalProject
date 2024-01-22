@@ -55,7 +55,7 @@ function GeolocComp(): JSX.Element {
 export default  function Flights(): JSX.Element {
   const [source, setSource] = useState<string>('JFK');
   const [destination, setDestination] = useState<string>('LHR');
-  const airports = trpc.recommendRoutes.useQuery([source, destination],{
+  const airports = trpc.recommendFlights.useQuery([source, destination],{
     enabled: false,
   })
 
@@ -96,7 +96,7 @@ export default  function Flights(): JSX.Element {
         </RStyle.RStyle>
         {airports.data?.map((airport) =>
         <RFeature
-          key={airport.code}
+          key={airport.airportcode}
           geometry={new Point(fromLonLat([airport.longitude, airport.latitude]))}
         ></RFeature>
           )}

@@ -1,7 +1,9 @@
 import { Flights } from './connectDB/flights';
+import { flight } from './connectDB/interfaces';
 import { airportInstance } from './connectDB/airports';
 import { airports } from './connectDB/airports';
 import { Sequelize } from 'sequelize';
+import { sequelize } from './connectDB/connectDB';
 
 airports.hasMany(Flights);
 Flights.belongsTo(airports);
@@ -26,8 +28,6 @@ export const dal = {
   getAllAirports: async (): Promise<airportInstance[]> => {
     try {
       const result = await airports.findAll({raw:true});
-      console.log(result);
-      
       return result
     } catch (err) {
       console.error(err);
@@ -62,17 +62,19 @@ export const dal = {
   },
   getAllFlightsFromAirports: async () => {
     try{
-      const result =  await airports.findAll({
-        attributes: [ 'id'],
-        include: [
-          {
-            model: Flights,
-            attributes: ['source_code','distance','destination_code'],
-          },
-        ],
-        order: [['id', 'ASC']],
-      })
-      return result
+      const result =  await sequelize.query(`
+      select 
+      airports_2.id_source,
+	    flights.id_destination,
+      flights.source_code,
+      flights.destination_code,
+      flights.distance
+      from airports_2
+      join 
+      flights on flights.source_code = airports_2.airportcode
+      order by airports_2.id_source
+      `) 
+      return result[0] as unknown as flight []
     } catch (error) {
       console.error('Error get airport:', error);
     }

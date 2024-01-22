@@ -15,10 +15,15 @@ export interface airportInstance
 export const airports = sequelize.define<airportInstance>(
     'airports_2',
     {
-      id: {
+      id_source: {
         type: DataTypes.NUMBER(),
         allowNull: false,
         unique: true,
+      },
+      id_destination: {
+      type: DataTypes.NUMBER(),
+      allowNull: false,
+      unique: true,
       },
       airportcode: {
         type: DataTypes.STRING(3),
