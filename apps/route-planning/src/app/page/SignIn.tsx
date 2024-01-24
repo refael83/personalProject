@@ -1,4 +1,3 @@
-import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useState } from 'react';
 import { ChangeEvent, FormEvent } from 'react';
@@ -48,7 +47,6 @@ export default function SignIn() {
 
   return (
     <>
-      <Navbar />
       <div className="flex items-center min-h-screen bg-white dark:bg-gray-900">
         <div className="container mx-auto">
           <div className="max-w-md mx-auto my-10">

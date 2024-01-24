@@ -1,6 +1,6 @@
 import { service }  from './service'
 import { z } from 'zod'
-import { airport } from './connectDB/interfaces'
+import { airport } from './sequelize/interfaces'
 import {initTRPC, TRPCError } from '@trpc/server';
 import { createContext } from './context';
 

@@ -1,7 +1,7 @@
 import { createHTTPServer } from '@trpc/server/adapters/standalone';
 import { appRouter } from './router'
 import { createContext } from './context';
-import { checkConnection } from './connectDB/connectDB';
+import { checkConnection } from './sequelize/connectDB';
 import  cors  from 'cors'
 import { service } from './service';
 

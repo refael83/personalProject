@@ -1,9 +1,8 @@
-import { Flights } from './connectDB/flights';
-import { flight } from './connectDB/interfaces';
-import { airportInstance } from './connectDB/airports';
-import { airports } from './connectDB/airports';
-import { Sequelize } from 'sequelize';
-import { sequelize } from './connectDB/connectDB';
+import { Flights } from './sequelize/flights';
+import { flight } from './sequelize/interfaces';
+import { airportInstance } from './sequelize/airports';
+import { airports } from './sequelize/airports';
+import { sequelize } from './sequelize/connectDB';
 
 airports.hasMany(Flights);
 Flights.belongsTo(airports);

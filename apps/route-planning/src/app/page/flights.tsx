@@ -2,7 +2,6 @@ import {
   trpc
 } from '../connectToServer';
 import Footer from '../components/Footer';
-import Navbar from '../components/Navbar';
 import { Coordinate } from "ol/coordinate";
 import { Geometry, Point, Polygon } from "ol/geom";
 import { Geolocation as OLGeoLoc } from "ol";
@@ -55,10 +54,12 @@ function GeolocComp(): JSX.Element {
 export default  function Flights(): JSX.Element {
   const [source, setSource] = useState<string>('JFK');
   const [destination, setDestination] = useState<string>('LHR');
-  const airports = trpc.recommendFlights.useQuery([source, destination],{
+  const { error, data, refetch } = trpc.recommendFlights.useQuery([source, destination],{
     enabled: false,
   })
-
+  if(error) {
+    return <p>Error : {error.message}</p>
+  }
 
   const handleSourceChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSource(e.target.value);
@@ -68,14 +69,13 @@ export default  function Flights(): JSX.Element {
     setDestination(e.target.value);
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    airports.refetch()
+    refetch()
   };
  
   return (
     <>
-      <Navbar />
       <form onSubmit={handleSubmit}>
         <InputComponent label="Source" value={source} onChange={handleSourceChange} />
         <InputComponent label="Destination" value={destination} onChange={handleDestinationChange} />
@@ -94,7 +94,7 @@ export default  function Flights(): JSX.Element {
       <RStyle.RStyle>
           <RStyle.RIcon src={locationIcon} anchor={[0.5, 0.8]} />
         </RStyle.RStyle>
-        {airports.data?.map((airport) =>
+        {data?.map((airport) =>
         <RFeature
           key={airport.airportcode}
           geometry={new Point(fromLonLat([airport.longitude, airport.latitude]))}

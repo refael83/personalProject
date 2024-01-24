@@ -1,5 +1,5 @@
 import '../app.module.css';
-import {  Link } from 'react-router-dom';
+import {  NavLink } from 'react-router-dom';
 
 export default function Navbar(): JSX.Element {
   return (
@@ -29,16 +29,16 @@ export default function Navbar(): JSX.Element {
           <nav>
             <ul className="md:flex items-center justify-between text-base text-blue-600 pt-4 md:pt-0">
               <li className="inline-block no-underline hover:text-black font-medium text-lg py-2 px-4 lg:-ml-2"> 
-                  <Link to="/home">Home</Link>
+                  <NavLink to="/">Home</NavLink>
               </li>
               <li className="inline-block no-underline hover:text-black font-medium text-lg py-2 px-4 lg:-ml-2"> 
-                  <Link to="/airports">Airports</Link>
+                  <NavLink to="airports">Airports</NavLink>
               </li>
               <li className="inline-block no-underline hover:text-black font-medium text-lg py-2 px-4 lg:-ml-2">               
-                  <Link to="/users">users</Link>
+                  <NavLink to="users">users</NavLink>
               </li>
               <li className="inline-block no-underline hover:text-black font-medium text-lg py-2 px-4 lg:-ml-2">               
-                  <Link to="/flights">flights</Link>
+                  <NavLink to="flights">flights</NavLink>
               </li>
             </ul>
           </nav>
@@ -50,9 +50,9 @@ export default function Navbar(): JSX.Element {
         >
           <div className="auth flex items-center w-full md:w-full">
             <button className="bg-transparent text-gray-800  p-2 rounded border border-gray-300 mr-4 hover:bg-gray-100 hover:text-gray-700">
-            <Link to="/signIn">
+            <NavLink to="/signIn">
               Sign in
-              </Link>
+              </NavLink>
             </button>
             <button className="bg-blue-600 text-gray-200  p-2 rounded  hover:bg-blue-500 hover:text-gray-100">
               Sign up

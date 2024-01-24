@@ -1,8 +1,8 @@
 import { dal } from './dal';
 import * as priorityQueues from './priorityQueues';
-import { airport } from './connectDB/interfaces';
-import { flight } from './connectDB/interfaces';
-import { airportInstance } from './connectDB/airports';
+import { airport } from './sequelize/interfaces';
+import { flight } from './sequelize/interfaces';
+import { airportInstance } from './sequelize/airports';
 
 export const service = {
   getAllFlights: async () => {
@@ -102,7 +102,6 @@ const searchMinimumRoute = (airports: airport[], flights: flight[] , destination
       priorityQueues.deleteNode(exploredNode.key);
       continue;
     }
-    console.log(exploredNode.airportcode);
     exploredNodes.push(exploredNode);
     onlyOneNode[exploredNode.id_source] = true;
     priorityQueues.deleteNode(exploredNode.key);

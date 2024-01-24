@@ -1,4 +1,4 @@
-import {airport} from "./connectDB/interfaces";
+import {airport} from "./sequelize/interfaces";
 
 export interface Node  {
     airportDetails: airport;

@@ -4,11 +4,12 @@ import Flights from './page/flights';
 import SignIn from './page/SignIn';
 import { useState } from 'react';
 import Users from './page/Users';
-import { Routes, BrowserRouter, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import { Routes, BrowserRouter, Route, } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { httpBatchLink } from '@trpc/client';
 import { trpc } from './connectToServer';
-import { ReactQueryDevtools } from'@tanstack/react-query-devtools';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 export default function App() {
   const [queryClient] = useState(() => new QueryClient());
@@ -17,14 +18,14 @@ export default function App() {
       links: [
         httpBatchLink({
           url: 'http://localhost:3000/',
-          headers: () => {           
+          headers: () => {
             return {
-              Authorization: String(localStorage.getItem('token'))  ,
+              Authorization: String(localStorage.getItem('token')),
             };
           },
         }),
       ],
-    }),
+    })
   );
 
   return (
@@ -32,15 +33,18 @@ export default function App() {
       <trpc.Provider client={trpcClient} queryClient={queryClient}>
         <QueryClientProvider client={queryClient}>
           <BrowserRouter>
-            <Routes>
-              <Route path="/home" element={<Home />}></Route>
-              <Route path="/airports" element={<Airports />}></Route>
-              <Route path="/users" element={<Users />}></Route>
-              <Route path="/flights" element={<Flights />}></Route>
-              <Route path="/signIn"  element={<SignIn />}></Route>
+          <Navbar />
+            <Routes>    
+              <Route>
+               <Route path="/" element={<Home />}></Route>
+               <Route path="users" element={<Users />}></Route>
+                <Route path="airports" element={<Airports />}></Route>
+                  <Route path="flights" element={<Flights />}></Route>
+                <Route path="signIn" element={<SignIn />}></Route>
+                </Route>          
             </Routes>
           </BrowserRouter>
-          <ReactQueryDevtools/>
+          <ReactQueryDevtools />
         </QueryClientProvider>
       </trpc.Provider>
     </div>
