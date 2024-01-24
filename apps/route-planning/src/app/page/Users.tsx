@@ -1,9 +1,7 @@
 
-//import { getUsers } from '../users/query/getUsers.query';
 import '../app.module.css'
 import Footer from '../components/Footer';
 import { useQuery, gql  } from '@apollo/client';
-//import { getUsers } from './users/query/getUsers.query';
 import user from '../users/interface';
 import '../app.module.css';
 
